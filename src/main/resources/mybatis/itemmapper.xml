@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kbstar.mapper.ItemMapper">
+
+    <select id="search" parameterType="itemSearch" resultType="item">
+        SELECT * FROM item
+        <where>
+            <if test="price != null and !price.equals('')">
+                price=#{price}
+            </if>
+            <if test="name !=null and !name.equals('')">
+                AND name LIKE '%'||#{name}||'%'
+            </if>
+        </where>
+    </select>
+    <select id="select" parameterType="Integer" resultType="item">
+    -- select 하면 String이 들어오고 item를 리턴
+        SELECT * FROM item WHERE iD=#{id}
+        -- 입력한 값이 id가 됨
+    </select>
+    <select id="selectall" resultType="item">
+        SELECT * FROM item
+    </select>
+    <insert id="insert" parameterType="item">
+        INSERT INTO item VALUES (item_seq.NEXTVAL, #{name}, #{price}, #{imgname}, SYSDATE)
+    </insert>
+    <update id="update" parameterType="item">
+        UPDATE item SET name=#{name},price=#{price},imgname=#{imgname} WHERE id=#{id}
+    </update>
+    <delete id="delete" parameterType="Integer">
+    -- id가 string으로 들어오면 해당 id를 삭제한다
+        DELETE FROM item WHERE id=#{id}
+    </delete>
+
+</mapper>
